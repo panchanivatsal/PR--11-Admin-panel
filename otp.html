@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log-in page</title>
+  <link rel="stylesheet" href="asset/otp.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="screen">
+      <div class="screen__content">
+        <form class="login">
+          <h2>Forgot Password? 🔒</h2>
+          <div class="login__field">
+            <i class="login__icon fas fa-user"></i>
+            <input type="email" id="email" class="login__input" placeholder="Enter the email">
+          </div>
+          <!-- <div class="login__field">
+            <i class="login__icon fas fa-user"></i>
+            <input type="text" id="otpnumber" class="login__input" placeholder="Enter the OTP number">
+          </div> -->
+          <div class="login__field">
+            <button type="button" id="resetButton" onclick="otp()" class="login__button">Reset Password</button>
+          </div>
+        </form>
+      </div>
+      <div class="screen__background">
+        <span class="screen__background__shape screen__background__shape4"></span>
+        <span class="screen__background__shape screen__background__shape3"></span>
+        <span class="screen__background__shape screen__background__shape2"></span>
+        <span class="screen__background__shape screen__background__shape1"></span>
+      </div>
+    </div>
+  </div>
+  <!-- particle js -->
+
+  <script type="text/javascript">
+
+    // <!-- OTP send and password reset -->
+    let otp = () => {
+      
+      let useremailaddress = document.getElementById('email').value;
+      let alluserdatafile = JSON.parse(localStorage.getItem("register"));
+      let filecollection = alluserdatafile.filter((v) => {
+        return v.email == useremailaddress
+      });
+      if (filecollection) {
+        let otp = Math.floor(Math.random() * 10000);
+        let obj = {
+          userotp: otp,
+          email: filecollection[0].email,
+        }
+        window.location.href = 'forgetpassword.html'
+        localStorage.setItem('userOtp', JSON.stringify(obj));
+        alert("Your otp =" + otp)
+      } else {
+        alert("Email is not valid")
+      }
+    }
+  </script>
+    <script src="watchman.js"></script>

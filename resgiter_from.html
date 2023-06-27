@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - codingnepalweb.com -->
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration or Sign Up form</title>
+  <link rel="stylesheet" href="asset/style res.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <h2>Registration</h2>
+    <form>
+      <div class="input-box">
+        <input type="text" id="name" placeholder="Enter your name">
+      </div>
+      <div class="input-box">
+        <input type="text" id="email" placeholder="Enter your email">
+      </div>
+      <div class="input-box">
+        <input type="password" id="password" placeholder="Create password">
+      </div>
+      <div class="input-box">
+        <input type="password" id="cpassword" placeholder="Confirm password">
+      </div>
+      <div class="policy">
+        <input type="checkbox" id="terms">
+        <h3>I accept all terms & condition</h3>
+      </div>
+      <div class="input-box button">
+        <input type="button" onclick="save()" value="Register Now">
+      </div>
+      <div class="text">
+        <h3>Already have an account? <a href="log-in page.html">Login now</a></h3>
+      </div>
+    </form>
+  </div>
+  <script type="text/javascript">
+    let data = [
+      {
+        name: "vatsal",
+        email: "vatsal@gmail.com",
+        password: "7487006211",
+        role: 'admin'
+      }
+    ];
+
+    const save = () => {
+      let name = document.getElementById('name').value;
+      let email = document.getElementById('email').value;
+      let password = document.getElementById('password').value;
+      let cpassword = document.getElementById('cpassword').value;
+      let terms = document.getElementById('terms').checked;
+
+      if (cpassword === password) {
+        if (terms) {
+          let obj = {
+            name: name,
+            email: email,
+            password: password,
+            role: 'user' // Assign 'user' role to all registered users
+          };
+
+          if (localStorage.getItem('register') === null || localStorage.getItem('register') === undefined) {
+            data.push(obj);
+            localStorage.setItem('register', JSON.stringify(data));
+          } else {
+            let val = JSON.parse(localStorage.getItem('register'));
+            val.push(obj);
+            localStorage.setItem('register', JSON.stringify(val));
+          }
+
+          alert("User successfully created");
+          document.getElementById('name').value = "";
+          document.getElementById('email').value = "";
+          document.getElementById('password').value = "";
+          document.getElementById('cpassword').value = "";
+        } else {
+          alert("Please accept the terms and conditions.");
+        }
+      } else {
+        alert("Password and confirm password do not match");
+      }
+    }
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log-in page</title>
+    <link rel="stylesheet" href="asset/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="screen">
+            <div class="screen__content">
+                <form class="login">
+                    <h2>Log - In</h2>
+                    <div class="login__field">
+                        <i class="login__icon fas fa-user"></i>
+                        <input type="text" id="email" class="login__input" placeholder="User name / Email">
+                    </div>
+                    <div class="login__field">
+                        <i class="login__icon fas fa-lock"></i>
+                        <a href="otp.html" style="display: flex; justify-content: end; color: #1f195e;"
+                            class="changepassword">forget password</a>
+                        <input type="password" id="password" class="login__input" placeholder="Password">
+                        <i id="togglePassword" class="login__icon fas fa-eye"></i>
+                    </div>
+
+                    <button class="button login__submit" onclick="save()">
+                        <span class="button__text">Log In Now</span>
+                        <i class="button__icon fas fa-chevron-right"></i>
+                    </button>
+                    <h5 style="display: flex; justify-content: end;">Don't have an account?
+                        <a href="resgiter_from.html" class="changepassword">Sing Up</a>
+                    </h5>
+                    <br><br>
+                </form>
+
+            </div>
+            <div class="screen__background">
+                <span class="screen__background__shape screen__background__shape4"></span>
+                <span class="screen__background__shape screen__background__shape3"></span>
+                <span class="screen__background__shape screen__background__shape2"></span>
+                <span class="screen__background__shape screen__background__shape1"></span>
+            </div>
+        </div>
+    </div>
+    <!-- log-in from  vaildation -->
+    <script type="text/javascript">
+        let checkUser = JSON.parse(localStorage.getItem('checkUserLogin'));
+        if (checkUser) {
+            window.location.href = "index.html";
+        }
+        const save = () => {
+            let email = document.getElementById('email').value;
+            let password = document.getElementById('password').value;
+            let allUser = JSON.parse(localStorage.getItem('register'));
+            let ans = allUser.filter((v) => {
+                if (v.email == email) {
+                    return v;
+                }
+            })
+            if (ans.length != 0) {
+                if (ans[0].password == password) {
+                    localStorage.setItem('checkUserLogin', JSON.stringify(ans[0]));
+                    window.location.href = "index.html";
+                } else {
+                    alert("Password is not valid")
+                }
+            } else {
+                alert("Email is not found")
+            }
+        }
+        // forget password code
+        const forgot = () => {
+            let useremailaddress = document.getElementById('email').value;
+            let alluserdatafile = JSON.parse(localStorage.getItem("register"));
+            let filecollection = alluserdatafile.filter((v) => {
+                return v.emil == useremailaddress
+            });
+            if (filecollection.length == 1) {
+                let otp = Math.floor(Math.random() * 1000);
+                let obj = {
+                    userotp: otp,
+                    emil: filecollection[0].email
+                }
+                localStorage.setItem('userOtp', JSON.stringify(obj));
+                alert("Your otp =" + otp)
+                window.location.href = "otp.html"
+            } else {
+                alert("Email is not valid")
+            }
+        }
+        const newpassword = () => {
+            let newpassword = document.getElementById('newpassword').value;
+            let compassword = document.getElementById('compassword').value;
+            if (newpassword == compassword) {
+                let alluserdatafile = JSON.parse(localStorage.getItem('register'));
+                let userOtp = JSON.parse(localStorage.getItem('userotp'));
+                let ans = alluserdatafile.filter((val) => {
+                    if (val.emil == userOtp.emil) {
+                        val.password = newpassword
+                    }
+                    return val;
+                })
+                localStorage.setItem('register', JSON.stringify(ans));
+                alert("Password successfull chaged");
+            }
+            else {
+                alert("Newpassword ans comfirm password is not same you can try agin");
+            }
+        }
+    </script>
+</body>
+
+</html>
